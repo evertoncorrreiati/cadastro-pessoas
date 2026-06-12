@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Pessoas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --accent: #6c63ff;
+      --accent-hover: #574fd6;
+      --accent-soft: rgba(108,99,255,0.12);
+      --text: #e8eaf6;
+      --text-muted: #7b82b0;
+      --success: #4caf82;
+      --danger: #f06292;
+      --radius: 14px;
+      --font: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    header .logo {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    header span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── FORMULÁRIO ── */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .form-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-card h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 18px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      margin: 18px 0 10px;
+    }
+
+    .row { display: grid; gap: 12px; }
+    .row.two { grid-template-columns: 1fr 1fr; }
+    .row.three-one { grid-template-columns: 2fr 1fr; }
+    .row.one-two { grid-template-columns: 1fr 2fr; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    label .opt {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.7;
+    }
+
+    input, textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.88rem;
+      padding: 10px 13px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    textarea { resize: vertical; min-height: 72px; }
+
+    .btn-save {
+      margin-top: 22px;
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-save:hover { background: var(--accent-hover); }
+    .btn-save:active { transform: scale(0.98); }
+
+    /* ── TABELA ── */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .table-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .table-header h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 18px;
+      background: var(--success);
+      border-radius: 2px;
+    }
+
+    .badge {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(108,99,255,0.25);
+    }
+
+    .btn-refresh {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.8rem;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-refresh:hover { color: var(--text); border-color: var(--accent); }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(46,51,80,0.5);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+
+    td {
+      padding: 12px 14px;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    td .name { font-weight: 500; }
+    td .sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 48px 0;
+      color: var(--text-muted);
+    }
+
+    .empty .icon { font-size: 2rem; margin-bottom: 10px; }
+    .empty p { font-size: 0.85rem; }
+
+    .actions { display: flex; gap: 8px; }
+
+    .btn-del {
+      background: rgba(240,98,146,0.1);
+      border: 1px solid rgba(240,98,146,0.25);
+      color: var(--danger);
+      font-family: var(--font);
+      font-size: 0.75rem;
+      padding: 5px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-del:hover { background: rgba(240,98,146,0.2); }
+
+    /* toast */
+    #toast {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--success);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">👤</div>
+  <div>
+    <h1>Gestão de Pessoas</h1>
+    <span>Cadastro &amp; listagem</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- FORMULÁRIO -->
+  <div class="form-card">
+    <h2>Nova Pessoa</h2>
+
+    <p class="section-label">Dados pessoais</p>
+    <div class="row two">
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" id="nome" placeholder="João"/>
+      </div>
+      <div class="field">
+        <label>Sobrenome</label>
+        <input type="text" id="sobrenome" placeholder="Silva"/>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <div class="field">
+        <label>E-mail</label>
+        <input type="email" id="email" placeholder="joao@email.com"/>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <div class="field">
+        <label>WhatsApp</label>
+        <input type="tel" id="whatsapp" placeholder="+55 11 99999-9999"/>
+      </div>
+    </div>
+
+    <p class="section-label">Endereço</p>
+    <div class="row three-one">
+      <div class="field">
+        <label>CEP</label>
+        <input type="text" id="cep" placeholder="00000-000" maxlength="9"/>
+      </div>
+      <div class="field">
+        <label>UF</label>
+        <input type="text" id="estado" placeholder="SP" maxlength="2"/>
+      </div>
+    </div>
+
+    <div class="row two" style="margin-top:12px">
+      <div class="field">
+        <label>Rua</label>
+        <input type="text" id="rua" placeholder="Rua das Flores"/>
+      </div>
+      <div class="field">
+        <label>Número</label>
+        <input type="text" id="numero" placeholder="123"/>
+      </div>
+    </div>
+
+    <div class="row two" style="margin-top:12px">
+      <div class="field">
+        <label>Bairro</label>
+        <input type="text" id="bairro" placeholder="Centro"/>
+      </div>
+      <div class="field">
+        <label>Cidade</label>
+        <input type="text" id="cidade" placeholder="São Paulo"/>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <div class="field">
+        <label>Complemento <span class="opt">(opcional)</span></label>
+        <input type="text" id="complemento" placeholder="Apto 42"/>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <div class="field">
+        <label>Observações <span class="opt">(opcional)</span></label>
+        <textarea id="observacoes" placeholder="Informações adicionais..."></textarea>
+      </div>
+    </div>
+
+    <button class="btn-save" onclick="salvar()">Salvar Cadastro</button>
+  </div>
+
+  <!-- TABELA -->
+  <div class="table-card">
+    <div class="table-header">
+      <h2>Pessoas Cadastradas <span class="badge" id="contador">0</span></h2>
+      <button class="btn-refresh" onclick="renderTabela()">↻ Atualizar</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Contato</th>
+            <th>Localização</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                <div class="icon">📭</div>
+                <p>Nenhuma pessoa cadastrada ainda.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast">✓ Cadastro salvo com sucesso!</div>
+
+<script>
+  let pessoas = [];
+
+  function salvar() {
+    const get = id => document.getElementById(id).value.trim();
+
+    const nome = get('nome');
+    const sobrenome = get('sobrenome');
+
+    if (!nome || !sobrenome) {
+      alert('Por favor, preencha pelo menos Nome e Sobrenome.');
+      return;
+    }
+
+    const pessoa = {
+      id: Date.now(),
+      nome, sobrenome,
+      email: get('email'),
+      whatsapp: get('whatsapp'),
+      cep: get('cep'),
+      estado: get('estado'),
+      rua: get('rua'),
+      numero: get('numero'),
+      bairro: get('bairro'),
+      cidade: get('cidade'),
+      complemento: get('complemento'),
+      observacoes: get('observacoes'),
+    };
+
+    pessoas.push(pessoa);
+    limparForm();
+    renderTabela();
+    mostrarToast();
+  }
+
+  function limparForm() {
+    ['nome','sobrenome','email','whatsapp','cep','estado','rua',
+     'numero','bairro','cidade','complemento','observacoes']
+      .forEach(id => document.getElementById(id).value = '');
+  }
+
+  function renderTabela() {
+    const tbody = document.getElementById('tbody');
+    document.getElementById('contador').textContent = pessoas.length;
+
+    if (pessoas.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4"><div class="empty"><div class="icon">📭</div><p>Nenhuma pessoa cadastrada ainda.</p></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = pessoas.map(p => `
+      <tr>
+        <td>
+          <div class="name">${p.nome} ${p.sobrenome}</div>
+          ${p.observacoes ? `<div class="sub">${p.observacoes}</div>` : ''}
+        </td>
+        <td>
+          <div>${p.email || '—'}</div>
+          <div class="sub">${p.whatsapp || ''}</div>
+        </td>
+        <td>
+          <div>${p.cidade || '—'}${p.estado ? ' / ' + p.estado : ''}</div>
+          <div class="sub">${p.rua ? p.rua + (p.numero ? ', ' + p.numero : '') : ''}</div>
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn-del" onclick="excluir(${p.id})">Excluir</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function excluir(id) {
+    pessoas = pessoas.filter(p => p.id !== id);
+    renderTabela();
+  }
+
+  function mostrarToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+
+</body>
+</html>
