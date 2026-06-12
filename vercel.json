@@ -1,1 +1,9 @@
-{"outputDirectory":"."} 
+{
+  "version": 2,
+  "builds": [
+    { "src": "cadastro.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/cadastro.html" }
+  ]
+}
